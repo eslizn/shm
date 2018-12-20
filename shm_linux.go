@@ -56,6 +56,12 @@ type segment struct {
 	*shmid_ds
 }
 
+func (s *segment) Id() int {
+	s.Lock()
+	defer s.Unlock()
+	return int(s.id)
+}
+
 func (s *segment) Size() int {
 	s.Lock()
 	defer s.Unlock()
