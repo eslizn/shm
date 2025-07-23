@@ -1,5 +1,7 @@
 # shared memory for go
 
+support unix(linux、darwin)/windows
+
 ## Usage
 
 * New[T any](options ...Option) (*T, error)
