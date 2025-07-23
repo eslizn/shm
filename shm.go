@@ -2,7 +2,6 @@ package shm
 
 import (
 	"github.com/pkg/errors"
-	"path/filepath"
 	"reflect"
 	"unsafe"
 )
@@ -24,7 +23,7 @@ func New[T any](options ...Option) (*T, error) {
 	if err != nil {
 		return nil, err
 	}
-	ptr, err := Open(filepath.Join(opt.dir, opt.name), size)
+	ptr, err := Open(opt.namer(opt.name), size)
 	if err != nil {
 		return nil, err
 	}

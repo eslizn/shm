@@ -1,8 +1,10 @@
 package shm
 
+type Namer func(name string) string
+
 type Options struct {
-	name string
-	dir  string
+	name  string
+	namer Namer
 }
 
 type Option func(*Options)
@@ -13,16 +15,16 @@ func WithName(name string) Option {
 	}
 }
 
-func WithDir(dir string) Option {
+func WithNamer(namer Namer) Option {
 	return func(options *Options) {
-		options.dir = dir
+		options.namer = namer
 	}
 }
 
 func getOptions(opts ...Option) *Options {
 	options := &Options{
-		name: "",
-		dir:  DefaultDir,
+		name:  "",
+		namer: defaultNamer,
 	}
 	for _, fn := range opts {
 		fn(options)

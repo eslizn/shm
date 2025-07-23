@@ -2,13 +2,12 @@ package shm
 
 import (
 	"github.com/stretchr/testify/require"
-	"syscall"
 	"testing"
 	"unsafe"
 )
 
 func Test_Sizeof(t *testing.T) {
-	obj := syscall.RawSockaddrLinklayer{}
+	obj := testStruct{}
 	size, err := Sizeof(obj)
 	require.NoError(t, err, err)
 	require.Equal(t, int(unsafe.Sizeof(obj)), size)
