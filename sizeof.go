@@ -50,7 +50,7 @@ func Sizeof(in any) (int, error) {
 		reflect.Bool:
 		total += int(ref.Size())
 	default:
-		return 0, errors.Wrapf(ErrTypeUnsupported, "type: %s is unsupported", ref.Name())
+		return 0, errors.Wrapf(ErrInvalidType, "type: %s is unsupported", ref.Name())
 	}
 	return total, nil
 }

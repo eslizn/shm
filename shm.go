@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	ErrTypeUnsupported = errors.New("invalid type")
-	ErrSystemCall      = errors.New("system call failed")
-	ErrInvalidSize     = errors.New("invalid shared memory size")
+	ErrInvalidType = errors.New("invalid type")
+	ErrSystemCall  = errors.New("system call failed")
+	ErrInvalidSize = errors.New("invalid shared memory size")
 )
 
 // New create or open object in shared memory
