@@ -2,6 +2,8 @@ package shm
 
 import (
 	"github.com/pkg/errors"
+	"os"
+	"path/filepath"
 	"reflect"
 	"unsafe"
 )
@@ -23,7 +25,14 @@ func New[T any](options ...Option) (*T, error) {
 	if err != nil {
 		return nil, err
 	}
-	ptr, err := Open(opt.finder(opt.name), size)
+
+	file := opt.finder(opt.name)
+	err = os.MkdirAll(filepath.Dir(file), os.ModePerm)
+	if err != nil {
+		return nil, err
+	}
+
+	ptr, err := Open(file, size)
 	if err != nil {
 		return nil, err
 	}

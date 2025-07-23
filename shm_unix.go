@@ -3,13 +3,8 @@ package shm
 import (
 	"github.com/pkg/errors"
 	"golang.org/x/sys/unix"
-	"path/filepath"
 	"unsafe"
 )
-
-var defaultFinder = func(name string) string {
-	return filepath.Join(`/dev/shm`, name)
-}
 
 // Open create or open memory block
 func Open(file string, size int) (unsafe.Pointer, error) {

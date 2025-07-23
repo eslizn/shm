@@ -1,6 +1,15 @@
 package shm
 
+import (
+	"os"
+	"path/filepath"
+)
+
 type Finder func(name string) string
+
+var defaultFinder = func(name string) string {
+	return filepath.Join(os.TempDir(), name)
+}
 
 type Options struct {
 	name   string

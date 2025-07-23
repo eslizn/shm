@@ -2,14 +2,8 @@ package shm
 
 import (
 	"golang.org/x/sys/windows"
-	"os"
-	"path/filepath"
 	"unsafe"
 )
-
-var defaultFinder = func(name string) string {
-	return filepath.Join(os.TempDir(), name)
-}
 
 // Open create or open memory block
 func Open(file string, size int) (unsafe.Pointer, error) {
