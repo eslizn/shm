@@ -23,7 +23,7 @@ func New[T any](options ...Option) (*T, error) {
 	if err != nil {
 		return nil, err
 	}
-	ptr, err := Open(opt.namer(opt.name), size)
+	ptr, err := Open(opt.finder(opt.name), size)
 	if err != nil {
 		return nil, err
 	}

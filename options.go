@@ -1,10 +1,10 @@
 package shm
 
-type Namer func(name string) string
+type Finder func(name string) string
 
 type Options struct {
-	name  string
-	namer Namer
+	name   string
+	finder Finder
 }
 
 type Option func(*Options)
@@ -15,16 +15,16 @@ func WithName(name string) Option {
 	}
 }
 
-func WithNamer(namer Namer) Option {
+func WithFinder(finder Finder) Option {
 	return func(options *Options) {
-		options.namer = namer
+		options.finder = finder
 	}
 }
 
 func getOptions(opts ...Option) *Options {
 	options := &Options{
-		name:  "",
-		namer: defaultNamer,
+		name:   "",
+		finder: defaultFinder,
 	}
 	for _, fn := range opts {
 		fn(options)

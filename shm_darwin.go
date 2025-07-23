@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	defaultNamer = func(name string) string {
+	defaultFinder = func(name string) string {
 		return filepath.Join(os.TempDir(), name)
 	}
 }

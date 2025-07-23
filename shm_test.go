@@ -31,6 +31,7 @@ type testStruct struct {
 func TestNewAndClose(t *testing.T) {
 	object, err := New[testStruct]()
 	require.NoError(t, err)
+	require.NotNil(t, object)
 	object.Int8++
 	t.Logf("%+v", object)
 	err = Close(object)
@@ -40,7 +41,7 @@ func TestNewAndClose(t *testing.T) {
 func TestOpen(t *testing.T) {
 	name := `test`
 	size := 1024
-	ptr, err := Open(defaultNamer(name), size)
+	ptr, err := Open(defaultFinder(name), size)
 	require.NoError(t, err)
 	require.NotEmpty(t, ptr)
 	err = Free(ptr, size)

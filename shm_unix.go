@@ -7,7 +7,7 @@ import (
 	"unsafe"
 )
 
-var defaultNamer = func(name string) string {
+var defaultFinder = func(name string) string {
 	return filepath.Join(`/dev/shm`, name)
 }
 
