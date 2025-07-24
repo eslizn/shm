@@ -5,6 +5,8 @@ support unix(linux、darwin)/windows
 ## Usage
 
 * New[T any](options ...Option) (*T, error)
+* Memset[T any](p *T)
+* Close[T any](p *T) !!! object is unavailable after close
 
 ```go
 type testStructChild struct {
