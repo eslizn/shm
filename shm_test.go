@@ -26,6 +26,7 @@ type testStruct struct {
 	Bool     bool
 	ArrayInt [8]int64
 	Children [8]testStructChild
+	Bytes    [32]byte
 }
 
 func TestNewAndClose(t *testing.T) {
