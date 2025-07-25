@@ -43,7 +43,7 @@ func main() {
 	fmt.Println("Value:", obj.Value)
 
 	// Reset the memory to zero values
-	err = obj.Memset()
+	shm.Memset(obj)
 	if err != nil {
 		panic(err)
 	}
@@ -60,15 +60,15 @@ Options:
 - `WithName(name string)` - Specifies a custom name for the shared memory
 - `WithFinder(finder Finder)` - Specifies a custom file finder
 
-### `func (obj *T) Memset() error`
+### `func Memset[T any](p *T)`
 
 Resets the shared memory object to its zero value.
 
-### `func (obj *T) Close() error`
+### `func Close[T any](p *T) error`
 
 Releases the shared memory object.
 
-### `func Sizeof[T any]() uintptr`
+### `func Sizeof(in any) (int, error)`
 
 Returns the size in bytes of type T.
 
