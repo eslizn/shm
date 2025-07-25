@@ -1,40 +1,102 @@
-# shared memory for go
+# Go Shared Memory Library (shm)
 
-support unix(linux、darwin)/windows
+A cross-platform Go library for creating and managing shared memory objects.
 
-## Usage
+## Features
 
-* New[T any](options ...Option) (*T, error)
-* Memset[T any](p *T)
-* Close[T any](p *T) !!! object is unavailable after close
+- Cross-platform support (Linux, Unix, Windows)
+- Generic API supporting any type
+- Simple and intuitive interface
+- Thread-safe operations
+- Configurable memory location
+
+## Installation
+
+```bash
+go get github.com/eslizn/shm
+```
+
+## Quick Start
 
 ```go
-type testStructChild struct {
-    Int8  int8
-    int16 int16
-    Int32 int32
-    Int64 int64
+package main
+
+import (
+	"fmt"
+	"github.com/eslizn/shm"
+)
+
+type Data struct {
+	Value int
 }
 
-type testStruct struct {
-    Int8     int8
-    int16    int16
-    Int32    int32
-    Int64    int64
-    Uint8    uint8
-    Uint16   uint16
-    Uint32   uint32
-    Uint64   uint64
-    Float32  float32
-    Float64  float64
-    Bool     bool
-    ArrayInt [8]int64
-    Children [8]testStructChild
-}
+func main() {
+	// Create a new shared memory object
+	obj, err := shm.New[Data]()
+	if err != nil {
+		panic(err)
+	}
+	defer obj.Close()
 
-func TestNewAndClose(t *testing.T) {
-    object, err := New[testStruct]()
-    require.NoError(t, err)
-    require.NotNil(t, object)
+	// Access the shared data
+	obj.Value = 42
+	fmt.Println("Value:", obj.Value)
+
+	// Reset the memory to zero values
+	err = obj.Memset()
+	if err != nil {
+		panic(err)
+	}
 }
 ```
+
+## API Reference
+
+### `func New[T any](opts ...Option) (*T, error)`
+
+Creates or opens a shared memory object of type T.
+
+Options:
+- `WithName(name string)` - Specifies a custom name for the shared memory
+- `WithFinder(finder Finder)` - Specifies a custom file finder
+
+### `func (obj *T) Memset() error`
+
+Resets the shared memory object to its zero value.
+
+### `func (obj *T) Close() error`
+
+Releases the shared memory object.
+
+### `func Sizeof[T any]() uintptr`
+
+Returns the size in bytes of type T.
+
+## Platform Support
+
+- **Linux**: Uses `/dev/shm` directory
+- **Unix**: Uses system temp directory
+- **Windows**: Uses Windows file mapping API
+
+## Configuration
+
+You can customize the shared memory location:
+
+```go
+// Custom name
+obj, err := shm.New[Data](shm.WithName("my-shared-data"))
+
+// Custom finder
+finder := func(name string) string {
+    return filepath.Join("/custom/path", name)
+}
+obj, err := shm.New[Data](shm.WithFinder(finder))
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+MIT
