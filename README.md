@@ -5,10 +5,6 @@ A cross-platform Go library for creating and managing shared memory objects.
 ## Features
 
 - Cross-platform support (Linux, Unix, Windows)
-- Generic API supporting any type
-- Simple and intuitive interface
-- Thread-safe operations
-- Configurable memory location
 
 ## Installation
 
@@ -57,7 +53,7 @@ func main() {
 Creates or opens a shared memory object of type T.
 
 Options:
-- `WithName(name string)` - Specifies a custom name for the shared memory
+- `WithName(name string)` - Specifies a custom name for the shared memory mapping file
 - `WithFinder(finder Finder)` - Specifies a custom file finder
 
 ### `func Memset[T any](p *T)`
