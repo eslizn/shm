@@ -1,4 +1,4 @@
-//go:build !windows
+//go:build linux || darwin || freebsd
 
 package shm
 
