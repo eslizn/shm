@@ -43,10 +43,10 @@ func TestNewAndClose(t *testing.T) {
 func TestOpen(t *testing.T) {
 	name := `test`
 	size := 1024
-	ptr, err := Open(defaultFinder(name), size)
+	ptr, err := open(defaultFinder(name), size, &Options{})
 	require.NoError(t, err)
 	require.NotEmpty(t, ptr)
-	err = Free(ptr, size)
+	err = free(ptr, size)
 	require.NoError(t, err)
 }
 

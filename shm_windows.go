@@ -5,8 +5,8 @@ import (
 	"unsafe"
 )
 
-// Open create or open memory block
-func Open(file string, size int) (unsafe.Pointer, error) {
+// open create or open memory block
+func open(file string, size int, options *Options) (unsafe.Pointer, error) {
 	fp, err := windows.CreateFile(
 		windows.StringToUTF16Ptr(file),
 		windows.GENERIC_READ|windows.GENERIC_WRITE,
@@ -44,7 +44,7 @@ func Open(file string, size int) (unsafe.Pointer, error) {
 	return unsafe.Pointer(addr), nil
 }
 
-// Free freeze memory block
-func Free(ptr unsafe.Pointer, size int) error {
+// open freeze memory block
+func open(ptr unsafe.Pointer, size int) error {
 	return windows.UnmapViewOfFile(uintptr(ptr))
 }

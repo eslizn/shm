@@ -14,6 +14,7 @@ var defaultFinder = func(name string) string {
 type Options struct {
 	name   string
 	finder Finder
+	force  bool
 }
 
 type Option func(*Options)
@@ -27,6 +28,12 @@ func WithName(name string) Option {
 func WithFinder(finder Finder) Option {
 	return func(options *Options) {
 		options.finder = finder
+	}
+}
+
+func WithForce(force bool) Option {
+	return func(options *Options) {
+		options.force = force
 	}
 }
 

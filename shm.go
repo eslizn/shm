@@ -32,7 +32,7 @@ func New[T any](options ...Option) (*T, error) {
 		return nil, err
 	}
 
-	ptr, err := Open(file, size)
+	ptr, err := open(file, size, opt)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func Close[T any](p *T) error {
 	if err != nil {
 		return err
 	}
-	err = Free(unsafe.Pointer(p), size)
+	err = free(unsafe.Pointer(p), size)
 	if err != nil {
 		return err
 	}
