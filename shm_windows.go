@@ -1,8 +1,9 @@
 package shm
 
 import (
-	"golang.org/x/sys/windows"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 // open create or open memory block
@@ -44,7 +45,17 @@ func open(file string, size int, options *Options) (unsafe.Pointer, error) {
 	return unsafe.Pointer(addr), nil
 }
 
-// open freeze memory block
-func open(ptr unsafe.Pointer, size int) error {
+// flush sync to disk
+func flush(ptr unsafe.Pointer, size int) error {
+	//@TODO FlushFileBuffers
+	return windows.FlushViewOfFile(uintptr(ptr), uintptr(size))
+}
+
+// free freeze memory block
+func free(ptr unsafe.Pointer, size int) error {
+	err := flush(ptr, size)
+	if err != nil {
+		return err
+	}
 	return windows.UnmapViewOfFile(uintptr(ptr))
 }

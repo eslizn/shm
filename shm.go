@@ -1,11 +1,12 @@
 package shm
 
 import (
-	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
 	"reflect"
 	"unsafe"
+
+	"github.com/pkg/errors"
 )
 
 var (
@@ -42,6 +43,18 @@ func New[T any](options ...Option) (*T, error) {
 // Memset reset object to zero val
 func Memset[T any](p *T) {
 	*p = *new(T)
+}
+
+// Flush sync to disk
+func Flush[T any](p *T) error {
+	if p == nil {
+		return nil
+	}
+	size, err := Sizeof(*p)
+	if err != nil {
+		return err
+	}
+	return flush(unsafe.Pointer(p), size)
 }
 
 // Close free object

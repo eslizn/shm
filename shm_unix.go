@@ -3,9 +3,10 @@
 package shm
 
 import (
+	"unsafe"
+
 	"github.com/pkg/errors"
 	"golang.org/x/sys/unix"
-	"unsafe"
 )
 
 // open create or open memory block
@@ -48,18 +49,16 @@ func open(file string, size int, options *Options) (unsafe.Pointer, error) {
 	return unsafe.Pointer(&mapping[0]), nil
 }
 
+// flush sync to disk
+func flush(ptr unsafe.Pointer, size int) error {
+	return unix.Msync(unsafe.Slice((*byte)(ptr), size), unix.MS_SYNC)
+}
+
 // free freeze memory block
 func free(ptr unsafe.Pointer, size int) error {
-	bytes := unsafe.Slice((*byte)(ptr), size)
-
-	err := unix.Msync(bytes, unix.MS_SYNC)
+	err := flush(ptr, size)
 	if err != nil {
 		return err
 	}
-
-	err = unix.MunmapPtr(ptr, uintptr(size))
-	if err != nil {
-		return err
-	}
-	return nil
+	return unix.MunmapPtr(ptr, uintptr(size))
 }

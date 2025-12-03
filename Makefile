@@ -8,5 +8,5 @@ GOSUMDB := $(shell go env GOSUMDB)
 GOPROXY := $(shell go env GOPROXY)
 
 test:
-	go test -race; \
+	go test -race
 	go test -bench=.
