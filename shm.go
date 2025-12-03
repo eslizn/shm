@@ -41,10 +41,7 @@ func New[T any](options ...Option) (*T, error) {
 
 // Memset reset object to zero val
 func Memset[T any](p *T) {
-	bytes := unsafe.Slice((*byte)(unsafe.Pointer(p)), unsafe.Sizeof(*p))
-	for k := range bytes {
-		bytes[k] = 0
-	}
+	*p = *new(T)
 }
 
 // Close free object
