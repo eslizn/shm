@@ -23,10 +23,10 @@ func open(file string, size int, options *Options) (unsafe.Pointer, error) {
 	}
 
 	if stat.Size != int64(size) {
-		if !options.force {
+		if stat.Size > 0 && !options.force {
 			return nil, errors.Wrapf(ErrInvalidSize, "file size: %d, apply: %d", stat.Size, size)
 		}
-		err = unix.Ftruncate(fd, 0)
+		err = unix.Ftruncate(fd, int64(size))
 		if err != nil {
 			return nil, errors.Wrap(ErrSystemCall, err.Error())
 		}
@@ -40,13 +40,6 @@ func open(file string, size int, options *Options) (unsafe.Pointer, error) {
 		}
 	}
 
-	if stat.Size == 0 {
-		err = unix.Ftruncate(fd, int64(size))
-		if err != nil {
-			return nil, errors.Wrap(ErrSystemCall, err.Error())
-		}
-	}
-
 	mapping, err := unix.Mmap(fd, 0, size, unix.PROT_READ|unix.PROT_WRITE, unix.MAP_SHARED)
 	if err != nil {
 		return nil, err
@@ -57,7 +50,14 @@ func open(file string, size int, options *Options) (unsafe.Pointer, error) {
 
 // free freeze memory block
 func free(ptr unsafe.Pointer, size int) error {
-	err := unix.MunmapPtr(ptr, uintptr(size))
+	bytes := unsafe.Slice((*byte)(ptr), size)
+
+	err := unix.Msync(bytes, unix.MS_SYNC)
+	if err != nil {
+		return err
+	}
+
+	err = unix.MunmapPtr(ptr, uintptr(size))
 	if err != nil {
 		return err
 	}
